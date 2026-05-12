@@ -6,3 +6,17 @@ body {
 .form-text, .alert {
     font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
+
+/* .table-sm td, .table-sm th {
+    padding: .55rem;
+} */
+
+#barToggleBtn, #pieToggleBtn {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto !important;
+}

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3/dist/lux/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>FOY Dashboard</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">FELLOWSHIP OF YOUTH</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="results.html">Results
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                     </li> -->
+                </ul>
+                <!-- <form class="d-flex">
+                    <input class="form-control me-sm-2" type="search" placeholder="Search">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form> -->
+                <span class="navbar-text text-white" id="navStatus"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" >
+    <!-- style="padding-top: 80px;"> -->
+
+        <!-- LOGIN SECTION -->
+        <div id="loginSection">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card shadow-sm mt-5">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Admin Access</h5>
+                        </div>
+                        <div class="card-body">
+                            <label for="adminID" class="form-label">Enter your ID</label>
+                            <input type="text" class="form-control" id="adminID" placeholder="5-digit ID" autocomplete="off">
+                            <small id="loginStatus" class="form-text text-muted"></small>
+                            <button type="button" class="btn btn-primary mt-3 w-100" id="loginBtn" onclick="login()">Access Dashboard</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD SECTION -->
+        <div id="dashboardSection" style="display:none;">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Dashboard</h3>
+                <button type="button" class="btn btn-outline-primary" onclick="refreshDashboard()">
+                    &#8635; Refresh
+                </button>
+            </div>
+
+            <!-- SECTION 1: REGISTRATION -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Registration Data</h5>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered table-hover table-sm align-middle" id="regTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Presbytery</th>
+                                <th>Delegates</th>
+                                <th>Associates</th>
+                                <th>Other</th>
+                                <th>Total Attendees</th>
+                                <th>Unique Congregations</th>
+                            </tr>
+                        </thead>
+                        <tbody id="regTableBody"></tbody>
+                        <tfoot class="table-secondary fw-bold" id="regTableFoot"></tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECTION 2: VOTING RESULTS -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Voting Stats</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Summary stats -->                  
+                    <div class="row mb-3">
+                        <div class="col-md">
+                            <div class="card text-center border-1 rounded border-primary">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Registered</h6>
+                                    <h2 id="statTotal" class="text-primary">-</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="card text-center border-1 rounded border-success">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Voted</h6>
+                                    <h2 id="statVoted" class="text-success">-</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="card text-center border-1 rounded border-danger">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Did Not Vote</h6>
+                                    <h2 id="statNotVoted" class="text-danger">-</h2>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-md">
+                            <div class="card text-center border-1 rounded border-warning">
+                                <div class="card-body">
+                                    <h6 class="text-muted">Participation</h6>
+                                    <h2 id="formStatRate" class="text-warning">-</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Vote stat charts -->                  
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="text-muted mb-0">Votes by Presbytery</h6>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-primary active" id="barToggleBtn" onclick="togglePresbyChart('bar')">Bar</button>
+                                    <button type="button" class="btn btn-outline-primary" id="pieToggleBtn" onclick="togglePresbyChart('pie')">Pie</button>
+                                </div>
+                            </div>
+                            <div id="presbyBarWrapper"style="position: relative; height: 300px;">
+                                <canvas id="presbyBarChart"></canvas>
+                            </div>
+                            <div id="presbyPieWrapper" style="position: relative; height: 300px; display:none;">
+                                <canvas id="presbyPieChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-center text-muted mb-3">Participation</h6>
+                            <canvas id="votesPieChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Votes per presbytery table -->
+                    <h6 class="text-muted mb-3">Votes per Presbytery</h6>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered table-sm table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Presbytery</th>
+                                    <th>Total</th>
+                                    <th>Delegates</th>
+                                    <th>Associates</th>
+                                    <th>Other</th>
+                                    <th>% of Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="votePresbyTableBody"></tbody>
+                            <tfoot class="table-secondary fw-bold" id="votePresbyTableFoot"></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: FORM RESULTS -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Vote Results</h5>
+                </div>
+                <div class="card-body">
+
+                    <!-- Votes per option table -->
+                    <h6 class="text-muted mb-3">Votes per Option</h6>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered table-hover table-sm align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Option</th>
+                                    <th>Total</th>
+                                    <th>Delegates</th>
+                                    <th>Associates</th>
+                                    <th>Other</th>
+                                    <th>% of Votes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="voteOptionTableBody"></tbody>
+                            <tfoot class="table-secondary fw-bold" id="voteOptionTableFoot"></tfoot>
+                        </table>
+                    </div>
+
+                    <!-- Votes per option charts -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-center text-muted mb-3">Votes per Option (Bar)</h6>
+                            <canvas id="optionBarChart"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-center text-muted mb-3">Votes per Option (Pie)</h6>
+                            <canvas id="optionPieChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

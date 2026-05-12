@@ -110,7 +110,7 @@ function submitID() {
             const idInput = document.getElementById("inputRegID");
             idInput.parentNode.insertBefore(badge, idInput.nextSibling);
 
-            showVotingSection();
+            showVotingSection(result.hasVoted);
         } else {
             statusEl.innerHTML = '❌ ' + result.message +' <span class="visually-hidden">' + result.message +'</span>';
             statusEl.className = "form-text text-danger";
@@ -140,12 +140,25 @@ document.body.appendChild(script);
     document.body.appendChild(script);
 }
 
-function showVotingSection() {
+function showVotingSection(hasVoted) {
     document.getElementById("registrationFieldset").querySelectorAll("input, select, button").forEach(el => el.disabled = true);
     document.getElementById("registrationFieldset").style.opacity = "0.5";
     document.getElementById("verifyBtn").style.display = "none";
     document.getElementById("voteFieldset").style.display = "block";
+
+    if (hasVoted) {
+        // Hide voting options and show already voted message
+        document.querySelector("#voteFieldset .list-group").style.display = "none";
+        document.getElementById("voteBtn").style.display = "none";
+        document.getElementById("voteStatus").innerHTML = `
+                <div class="alert alert-warning">
+                    ⚠️ Our records show that you have already submitted a vote. 
+                    If you believe this is an error, please contact the administrator.
+                </div>
+            `;
+    }
 }
+
 
 function submitVote() {
     const selected   = document.querySelector('input[name="presbytery"]:checked');
